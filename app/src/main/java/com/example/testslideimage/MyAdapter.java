@@ -3,6 +3,7 @@ package com.example.testslideimage;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-
+    private Bitmap mBmp;
     public MyAdapter(Context context){
         this.mContext = context;
     }
@@ -53,9 +54,15 @@ public class MyAdapter extends RecyclerView.Adapter {
     }
 
     public void move(int y){
-        Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.hello);
-        if(y > 0 && y < bmp.getHeight() - 400){
-            Bitmap bitmap = Bitmap.createBitmap(bmp,0,y,bmp.getWidth(),400);
+        if(mBmp == null){
+            mBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.hello);
+        }
+        if(y > 0 && y < mBmp.getHeight() - 400){
+            Bitmap bitmap = Bitmap.createBitmap(mBmp,0,y,mBmp.getWidth(),400);
+            iv.setImageBitmap(bitmap);
+        } else if(y <0 && y > 400 - mBmp.getHeight()){
+            Log.i("123","height:"+mBmp.getHeight()+",y:"+y);
+            Bitmap bitmap = Bitmap.createBitmap(mBmp,0,mBmp.getHeight()+y-400,mBmp.getWidth(),400);
             iv.setImageBitmap(bitmap);
         }
 
